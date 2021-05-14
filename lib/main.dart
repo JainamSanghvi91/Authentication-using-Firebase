@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:internshala/screens/addproductpage.dart';
 import 'package:internshala/screens/authScreen.dart';
 import 'package:internshala/screens/mainPage.dart';
 
@@ -16,17 +17,17 @@ class MyApp extends StatelessWidget {
       title: 'Chat App',
       theme: ThemeData(
         primarySwatch: Colors.red,
-        backgroundColor: Colors.red,
-        accentColor: Colors.redAccent,
-        accentColorBrightness: Brightness.dark,
-        buttonTheme: ButtonTheme.of(context).copyWith(
-          buttonColor: Colors.red,
-          textTheme: ButtonTextTheme.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        // backgroundColor: Colors.red,
+        // accentColor: Colors.redAccent,
+        // accentColorBrightness: Brightness.dark,
+        // buttonTheme: ButtonTheme.of(context).copyWith(
+        //   buttonColor: Colors.red,
+        //   textTheme: ButtonTextTheme.primary,
+        //   shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.circular(30),
+        //   ),
+        // ),
+        // visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.onAuthStateChanged,
@@ -37,6 +38,10 @@ class MyApp extends StatelessWidget {
           return AuthScreen();
         },
       ),
+      routes: {
+        AddProductPage.routename: (ctx) => AddProductPage(),
+
+      },
     );
   }
 }

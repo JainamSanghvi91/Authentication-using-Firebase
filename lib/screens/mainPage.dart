@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:internshala/screens/addproductpage.dart';
 
 class MainPage extends StatelessWidget {
   @override
@@ -38,6 +39,11 @@ class MainPage extends StatelessWidget {
         ],
       ),
       body: Text("Internship leni he hai bhai"),
+       floatingActionButton:FloatingActionButton(
+            // backgroundColor: primaryGreen,
+            foregroundColor: Colors.white,
+            child: Icon(Icons.add),
+            onPressed: () => Navigator.of(context).pushNamed(AddProductPage.routename)),
     );
   }
 }
