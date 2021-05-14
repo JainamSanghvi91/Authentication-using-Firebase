@@ -15,7 +15,6 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _auth = FirebaseAuth.instance;
   var _isLoading = false;
-
   void _submitAuthForm(
     String email,
     String password,

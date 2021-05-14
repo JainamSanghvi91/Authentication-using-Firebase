@@ -40,7 +40,6 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         AddProductPage.routename: (ctx) => AddProductPage(),
-
       },
     );
   }

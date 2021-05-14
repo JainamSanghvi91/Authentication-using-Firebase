@@ -39,11 +39,12 @@ class MainPage extends StatelessWidget {
         ],
       ),
       body: Text("Internship leni he hai bhai"),
-       floatingActionButton:FloatingActionButton(
-            // backgroundColor: primaryGreen,
-            foregroundColor: Colors.white,
-            child: Icon(Icons.add),
-            onPressed: () => Navigator.of(context).pushNamed(AddProductPage.routename)),
+      floatingActionButton: FloatingActionButton(
+          // backgroundColor: primaryGreen,
+          foregroundColor: Colors.white,
+          child: Icon(Icons.add),
+          onPressed: () =>
+              Navigator.of(context).pushNamed(AddProductPage.routename)),
     );
   }
 }
