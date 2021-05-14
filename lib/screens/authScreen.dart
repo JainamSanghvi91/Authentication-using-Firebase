@@ -57,11 +57,11 @@ class _AuthScreenState extends State<AuthScreen> {
           'imageUrl': url,
         });
       }
-    } on PlatformException catch (error) {
+    } on PlatformException catch (err) {
       var message = 'An error occured, please check your credentials!';
 
-      if (error.message != null) {
-        message = error.message;
+      if (err.message != null) {
+        message = err.message;
       }
 
       Scaffold.of(ctx).showSnackBar(SnackBar(
