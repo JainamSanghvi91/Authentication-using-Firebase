@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:internshala/screens/addproductpage.dart';
 import 'package:internshala/screens/authScreen.dart';
 import 'package:internshala/screens/mainPage.dart';
+import 'package:internshala/spash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,10 +15,12 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp(
-      title: 'Chat App',
+      title: 'Inventroy',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.orange,
         // backgroundColor: Colors.red,
         // accentColor: Colors.redAccent,
         // accentColorBrightness: Brightness.dark,
@@ -29,9 +33,14 @@ class MyApp extends StatelessWidget {
         // ),
         // visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+                debugShowCheckedModeBanner: false,
+
       home: StreamBuilder(
         stream: FirebaseAuth.instance.onAuthStateChanged,
         builder: (context, userSnapshot) {
+          if (userSnapshot.connectionState == ConnectionState.waiting) {
+            return SplasScreen();
+          }
           if (userSnapshot.hasData) {
             return MainPage();
           }

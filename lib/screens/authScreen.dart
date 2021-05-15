@@ -5,9 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:internshala/login.dart';
 import 'package:internshala/widgets/authForm.dart';
 
 class AuthScreen extends StatefulWidget {
+  
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
@@ -19,7 +21,6 @@ class _AuthScreenState extends State<AuthScreen> {
     String email,
     String password,
     String username,
-    File image,
     bool isLogin,
     BuildContext ctx,
   ) async {
@@ -37,15 +38,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
         //upload an image on firestore before we write extra data
         // Here ref points to root bucket where we can store all our data like images
-        final ref = FirebaseStorage.instance
-            .ref()
-            .child('user_image')
-            .child(authResult.user.uid + '.jpg');
-
-        await ref.putFile(image).onComplete;
-
-        final url = await ref.getDownloadURL();
-
+       
         //extra user data
         await Firestore.instance
             .collection('users')
@@ -53,7 +46,6 @@ class _AuthScreenState extends State<AuthScreen> {
             .setData({
           'username': username,
           'email': email,
-          'imageUrl': url,
         });
       }
     } on PlatformException catch (error) {
@@ -81,8 +73,8 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: AuthForm(_submitAuthForm, _isLoading),
+      // backgroundColor: Theme.of(context).primaryColor,
+      body: Login(_submitAuthForm, _isLoading),
     );
   }
 }
