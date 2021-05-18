@@ -2,17 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:internshala/screens/addproductpage.dart';
+import 'package:internshala/screens/googleprovider.dart';
 import 'package:internshala/size_config.dart';
 import 'package:internshala/widgets/productlist.dart';
+import 'package:provider/provider.dart';
 import 'package:sweetalert/sweetalert.dart';
 
 class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      SizeConfig().init(constraints);
-      var maxW=constraints.maxWidth;
-      var maxH=constraints.maxHeight;
+      // SizeConfig().init(constraints);
+      var maxW = constraints.maxWidth;
+      var maxH = constraints.maxHeight;
       return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -33,8 +35,10 @@ class MainPage extends StatelessWidget {
                           showCancelButton: true, onPress: (bool isConfirm) {
                         if (isConfirm) {
                           Navigator.of(context).pop();
-
-                          FirebaseAuth.instance.signOut();
+                          Provider.of<GoogleSingnInProvider>(context,
+                                  listen: false)
+                              .logout();
+                          // FirebaseAuth.instance.signOut();
                           return false;
                         }
                       })
@@ -69,17 +73,23 @@ class MainPage extends StatelessWidget {
                         .document(id)
                         .delete();
                   }
-                  return Container(      
-               padding: EdgeInsets.only(top: 10),
+
+                  return Container(
+                    padding: EdgeInsets.only(top: 10),
                     child: chatDocs.length == 0
                         ? Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Center(child: Container(width: maxW*0.6,child: Image.asset('assets/images/add_product.png'))),
-                            Text("Add Product to your Inventory!",style: TextStyle(fontSize: 16*maxH/647)),
-                          ],
-                        )
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Center(
+                                  child: Container(
+                                      width: maxW * 0.6,
+                                      child: Image.asset(
+                                          'assets/images/add_product.png'))),
+                              Text("Add Product to your Inventory!",
+                                  style: TextStyle(fontSize: 16 * maxH / 647)),
+                            ],
+                          )
                         : ListView.builder(
                             // reverse: true,
                             itemCount: chatDocs.length,

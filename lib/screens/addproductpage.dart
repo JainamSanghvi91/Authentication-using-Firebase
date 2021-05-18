@@ -19,6 +19,8 @@ class AddProductPage extends StatefulWidget {
 
 class _AddProductPageState extends State<AddProductPage> {
   bool _isLoading = false;
+      final image = ImagePicker();
+
   Map<String, String> _userdata = {
     'name': '',
     'description': '',
@@ -51,17 +53,16 @@ class _AddProductPageState extends State<AddProductPage> {
     FocusScope.of(context).unfocus();
     if (isValid) {
       _forrmkey.currentState.save();
-      
 
       final user = await FirebaseAuth.instance.currentUser();
       if (from == 0) {
-        if(_pickedImage==null){
+        if (_pickedImage == null) {
           showErrorDialoug(1, "Please select the Image!", context);
           return;
         }
         setState(() {
-        _isLoading = true;
-      });
+          _isLoading = true;
+        });
         final ref = FirebaseStorage.instance
             .ref()
             .child('product_image')
@@ -81,8 +82,8 @@ class _AddProductPageState extends State<AddProductPage> {
       } else {
         var url;
         setState(() {
-        _isLoading = true;
-      });
+          _isLoading = true;
+        });
         if (_pickedImage != null) {
           final ref = FirebaseStorage.instance
               .ref()
@@ -120,7 +121,7 @@ class _AddProductPageState extends State<AddProductPage> {
             title: Text("Change Product Image?"),
             content: Text("Which source you want to use Camera or Gallery?"),
             actions: [
-              FlatButton(
+              TextButton(
                   child: Text(
                     "Gallery",
                     style: TextStyle(
@@ -131,7 +132,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     getImageGallery();
                     Navigator.of(context).pop();
                   }),
-              FlatButton(
+              TextButton(
                   child: Text(
                     "Camera",
                     style: TextStyle(
@@ -148,37 +149,47 @@ class _AddProductPageState extends State<AddProductPage> {
   }
 
   Future getImageCamera() async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.getImage(
-      source: ImageSource.camera,
-      imageQuality: 50,
-      maxWidth: 150,
-    );
-    final pickedImageFile = File(pickedImage.path);
-    setState(() {
-      _userdata['image'] = '';
-      _pickedImage = pickedImageFile;
-    });
+    final pickedimage=await image.getImage(source: ImageSource.camera);
+    try {
+      // final pickedimage = await image.(
+      //   source: ImageSource.camera,
+        
+      // );
+      final pickedImageFile = File(pickedimage.path);
+      setState(() {
+        _userdata['image'] = '';
+        _pickedImage = pickedImageFile;
+      });
+    } catch (error) {
+      print("photo not uploaded");
+    }
+
+    // final pickedImage = await picker.getImage(
+    //   source: ImageSource.camera,
+    //   imageQuality: 50,
+    //   maxWidth: 150,
+    // );
   }
 
   Future getImageGallery() async {
-    final image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    final picker = ImagePicker();
-    final pickedImage = await picker.getImage(
-      source: ImageSource.gallery,
-      imageQuality: 50,
-      maxWidth: 150,
-    );
-    final pickedImageFile = File(pickedImage.path);
-    setState(() {
-      _userdata['image'] = '';
-      _pickedImage = pickedImageFile;
-    });
+    final pickedimage=await image.getImage(source: ImageSource.gallery);
+    try {
+     
+      // final pickedimage = await image.getImage(
+      //   source: ImageSource.gallery,
+      // );
+      final pickedImageFile = File(pickedimage.path);
+      setState(() {
+        _userdata['image'] = '';
+        _pickedImage = pickedImageFile;
+      });
+    } catch (error) {
+      print("Photo not uploaded");
+    }
   }
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     if (isfirst) {
       final productId =
@@ -207,19 +218,24 @@ class _AddProductPageState extends State<AddProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
-    icon: Icon(Icons.arrow_back, color: Colors.white,),
-    onPressed: () => Navigator.of(context).pop(),
-  ), 
-        title: Text(from == 0 ? "Add Product" : "Edit Product",style: TextStyle(color: Colors.white,)),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(from == 0 ? "Add Product" : "Edit Product",
+            style: TextStyle(
+              color: Colors.white,
+            )),
       ),
       body: LayoutBuilder(builder: (context, constraints) {
         var maxH = SizeConfig.heightMultiplier * 100;
         var maxW = SizeConfig.widthMultiplier * 100;
-        print("maxH is ${maxH} ${maxW}");
+        print("hreee maxH is ${maxH} ${maxW}");
         return SingleChildScrollView(
           physics: (MediaQuery.of(context).viewInsets == 0)
               ? NeverScrollableScrollPhysics()
@@ -272,10 +288,9 @@ class _AddProductPageState extends State<AddProductPage> {
                   ),
                 ),
                 Container(
-                  height: 2.4* maxH / 8.5,
+                  height: 2.4 * maxH / 8.5,
                   child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         margin: EdgeInsets.only(
@@ -301,8 +316,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                 color: Colors.grey[350],
                                 blurRadius: 0.0046 * maxH)
                           ],
-                          borderRadius:
-                              BorderRadius.circular(3 * maxH / 647),
+                          borderRadius: BorderRadius.circular(3 * maxH / 647),
                           color: Colors.white,
                         ),
                         child: TextFormField(
@@ -351,8 +365,7 @@ class _AddProductPageState extends State<AddProductPage> {
                                 color: Colors.grey[350],
                                 blurRadius: 0.0046 * maxH)
                           ],
-                          borderRadius:
-                              BorderRadius.circular(3 * maxH / 647),
+                          borderRadius: BorderRadius.circular(3 * maxH / 647),
                           color: Colors.white,
                         ),
                         child: TextFormField(
@@ -378,37 +391,40 @@ class _AddProductPageState extends State<AddProductPage> {
                   ),
                 ),
                 Container(
-                    height: 3 * maxH / 8.5,
-                                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-
-                                      children: [
-                                        Flexible(
-                                          child: Container(
-                          margin: EdgeInsets.only(top: 20*maxH/647,left: 10 * maxW / 360,
-                            right: 10 * maxW / 360),
-                          width: maxW ,
+                  height: 3 * maxH / 8.5,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Flexible(
+                        child: Container(
+                          margin: EdgeInsets.only(
+                              top: 20 * maxH / 647,
+                              left: 10 * maxW / 360,
+                              right: 10 * maxW / 360),
+                          width: maxW,
                           height: maxH * 0.07,
-                          child:(_isLoading)
-                      ? Center(child: CircularProgressIndicator())
-                      :  RaisedButton(
-                            child: Text(
-                              from == 0 ? 'Add Product' : "Update Product",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20 * maxH / 647,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            onPressed: () => _sendMessage(),
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                          BorderRadius.circular(30 * maxH / 647)),
-                            color: Colors.orange,
-                          ),
+                          child: (_isLoading)
+                              ? Center(child: CircularProgressIndicator())
+                              : RaisedButton(
+                                  child: Text(
+                                    from == 0
+                                        ? 'Add Product'
+                                        : "Update Product",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20 * maxH / 647,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  onPressed: () => _sendMessage(),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          30 * maxH / 647)),
+                                  color: Colors.orange,
+                                ),
                         ),
-                                        ),
-                                      ],
-                                    ),
+                      ),
+                    ],
+                  ),
                 ),
 
                 // Container(

@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:internshala/googlelogin.dart';
 import 'package:internshala/screens/addproductpage.dart';
 import 'package:internshala/screens/authScreen.dart';
 import 'package:internshala/screens/mainPage.dart';
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
-       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp(
       title: 'Inventroy',
       theme: ThemeData(
@@ -33,20 +35,20 @@ class MyApp extends StatelessWidget {
         // ),
         // visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-                debugShowCheckedModeBanner: false,
-
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.onAuthStateChanged,
-        builder: (context, userSnapshot) {
-          if (userSnapshot.connectionState == ConnectionState.waiting) {
-            return SplasScreen();
-          }
-          if (userSnapshot.hasData) {
-            return MainPage();
-          }
-          return AuthScreen();
-        },
-      ),
+      debugShowCheckedModeBanner: false,
+      home: GoogleLogin(),
+      // home: StreamBuilder(
+      //   stream: FirebaseAuth.instance.onAuthStateChanged,
+      //   builder: (context, userSnapshot) {
+      //     if (userSnapshot.connectionState == ConnectionState.waiting) {
+      //       return SplasScreen();
+      //     }
+      //     if (userSnapshot.hasData) {
+      //       return MainPage();
+      //     }
+      //     return AuthScreen();
+      //   },
+      // ),
       routes: {
         AddProductPage.routename: (ctx) => AddProductPage(),
       },
